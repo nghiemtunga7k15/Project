@@ -1,0 +1,21 @@
+.widget{
+	direction: rtl;
+}
+.facebook{
+	padding: 4px;
+    background: blue;
+    color: white;
+    border-radius: 27px;
+    font-size: 15px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.gmail{
+	padding: 4px;
+    background: red;
+    color: white;
+    border-radius: 27px;
+    font-size: 15px;
+    margin-right: 10px;
+    cursor: pointer;
+}

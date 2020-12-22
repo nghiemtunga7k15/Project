@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+import "antd/dist/antd.css";
+import  LoginComponent from './components/Login';
+import  RegisterComponent from './components/Register';
+import  HomeComponent from './components/Home';
+import { useSelector } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+  const currentUser = useSelector(state => state.currentUser);
+    if (currentUser == undefined){
+        return (
+          <LoginComponent />
+        );
+    }
+    return (
+      <Router>
+          <Switch>
+            <Route path="/register">
+                <RegisterComponent />
+            </Route>
+            <Route path="/">
+                <HomeComponent />
+            </Route>
+            <Route path="/login">
+                <LoginComponent />
+            </Route>
+          </Switch>
+      </Router>
+    );
 }
-
-export default App;
