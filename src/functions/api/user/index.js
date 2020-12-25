@@ -44,7 +44,16 @@ const UserApi = {
         console.error(e);
         return []
       }
-    }
+    },
+    demo(token) {
+      try {
+        const  data  = MyService.postRequestData('/user/2fa/generate',{},token)
+        return data;
+      } catch (e) {
+        console.error(e);
+        return []
+      }
+    },
 };
 
 export default UserApi;

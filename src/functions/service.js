@@ -21,10 +21,12 @@ const MyService = {
       .catch((error) => (result = error));
     return result;
   },
-  async postRequestData(url, data) {
+  async postRequestData(url, data, token = null) {
     let result;
     await axios
-      .post(config.BASE_URL + url, data)
+      .post(config.BASE_URL + url, data , {
+        headers: getHeaders(token)
+      })
       .then((response) => {
         result = response.data;
       })

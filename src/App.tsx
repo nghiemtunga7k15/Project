@@ -13,11 +13,11 @@ import { useSelector } from 'react-redux';
 
 export default function App() {
   const currentUser = useSelector(state => state.currentUser);
-    if (currentUser == undefined){
-        return (
-          <LoginComponent />
-        );
-    }
+    // if (currentUser == undefined){
+    //     return (
+    //       <LoginComponent />
+    //     );
+    // }
     return (
       <Router>
           <Switch>

@@ -10,6 +10,14 @@ import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/ico
 const Home = () => {
   	const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
+    const [state, setState] = useState(10);
+
+    useEffect(() => {
+	    let token = localStorage.getItem('usertoken');
+  	 	UserApi.demo(token).then(ok=>{
+  	 		setState(ok)
+  	 	})
+	});
 	const onFinish = (values: any) => {
 		let token = localStorage.getItem('usertoken');
   	 	UserApi.updateInfo(values, token).then(ok=>{
@@ -40,6 +48,8 @@ const Home = () => {
 
     return (
 	   	<div>
+	   	<img src="data:image/png;base64,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" width="100" height="50" />
+    		
 		   	<div>
 			    <Menu  mode="horizontal">
 			        <Menu.Item key="mail" icon={<MailOutlined />}>
