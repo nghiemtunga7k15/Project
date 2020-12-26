@@ -11,7 +11,7 @@ const UserApi = {
     },
     login(params) {
       try {
-        const  data  = MyService.postRequestData('/auth/login',params)
+        const  data  = MyService.postRequestData('/auth/basic',params)
         return data;
       } catch (e) {
         console.error(e);
@@ -45,9 +45,18 @@ const UserApi = {
         return []
       }
     },
-    demo(token) {
+    generateTwoFa(token) {
       try {
         const  data  = MyService.postRequestData('/user/2fa/generate',{},token)
+        return data;
+      } catch (e) {
+        console.error(e);
+        return []
+      }
+    },
+    onOffTwoFa(token, code) {
+      try {
+        const  data  = MyService.postRequestData('/user/2fa/generate',{code},token)
         return data;
       } catch (e) {
         console.error(e);

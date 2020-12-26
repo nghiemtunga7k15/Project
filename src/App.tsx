@@ -13,22 +13,18 @@ import { useSelector } from 'react-redux';
 
 export default function App() {
   const currentUser = useSelector(state => state.currentUser);
-    // if (currentUser == undefined){
-    //     return (
-    //       <LoginComponent />
-    //     );
-    // }
+    
     return (
       <Router>
           <Switch>
             <Route path="/register">
                 <RegisterComponent />
             </Route>
-            <Route path="/">
-                <HomeComponent />
-            </Route>
             <Route path="/login">
                 <LoginComponent />
+            </Route>
+            <Route path="/">
+                <HomeComponent />
             </Route>
           </Switch>
       </Router>

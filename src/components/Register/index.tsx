@@ -1,6 +1,7 @@
 import { Form, Input, Button, Checkbox,  Row, Col } from 'antd';
 import UserApi from './../../functions/api/user'
 import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
 const layout = {
   labelCol: { span: 8 },
@@ -12,6 +13,7 @@ const tailLayout = {
 
 const Login = () => {
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const onFinish = (values: any) => {
 	    UserApi.register(values).then(res=>{
 	    	let data: any;
@@ -20,7 +22,8 @@ const Login = () => {
 			}
 	    	var action = { type : 'SET_CURRENT_USER' , data};
   			dispatch(action)
-	     	localStorage.setItem('usertoken', res.token)
+	     	localStorage.setItem('usertoken', res.token);
+	     	history.push("/");
 	    })
 	};
 
@@ -49,6 +52,37 @@ const Login = () => {
 			        <Input.Password />
 			      </Form.Item>
 
+			      <Form.Item
+			        label="User name"
+			        name="username"
+			        rules={[{ required: true, message: 'Please input your email!' }]}
+			      >
+			        <Input />
+			      </Form.Item>
+
+			      <Form.Item
+			        label="Phone"
+			        name="phone"
+			        rules={[{ required: true, message: 'Please input your email!' }]}
+			      >
+			        <Input />
+			      </Form.Item>
+
+			      <Form.Item
+			        label="FirstName"
+			        name="firstName"
+			        rules={[{ required: true, message: 'Please input your email!' }]}
+			      >
+			        <Input />
+			      </Form.Item>
+
+			      <Form.Item
+			        label="LastName"
+			        name="lastName"
+			        rules={[{ required: true, message: 'Please input your email!' }]}
+			      >
+			        <Input />
+			      </Form.Item>
 			      <Form.Item {...tailLayout}>
 			        <Button type="primary" htmlType="submit">
 			          Register

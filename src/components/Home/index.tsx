@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Button, Row, Col, notification, Menu} from 'antd';
+import { Form, Input, InputNumber, Button, Row, Col, notification, Menu, Modal, Switch} from 'antd';
 import UserApi from './../../functions/api/user'
 import 'font-awesome/css/font-awesome.min.css';
 import './style.css';
@@ -11,16 +11,54 @@ const Home = () => {
   	const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
     const [state, setState] = useState(10);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible_v2, setIsModalVisible_v2] = useState(false);
+    const [QrCode, setQrCode] = useState('false');
 
     useEffect(() => {
-	    let token = localStorage.getItem('usertoken');
-  	 	UserApi.demo(token).then(ok=>{
-  	 		setState(ok)
-  	 	})
 	});
+	const generateQRCode = () => {
+		let token = localStorage.getItem('usertoken');
+  	 	UserApi.generateTwoFa(token).then(res=>{
+  	 		console.log(res)
+  	 		if (res.statusCode == 200){
+				setQrCode(res.data)
+  	 		}
+  	 	})
+	};
+	const showModal = () => {
+	    setIsModalVisible(true);
+	    generateQRCode()
+	};
+
+    const handleOk = () => {
+	    setIsModalVisible(false);
+	};
+
+    const handleCancel = () => {
+     	setIsModalVisible(false);
+    };
+    const showModal_v2 = () => {
+	    setIsModalVisible_v2(true);
+	};
+
+    const handleOk_v2 = () => {
+	    setIsModalVisible_v2(false);
+	};
+
+    const handleCancel_v2 = () => {
+     	setIsModalVisible_v2(false);
+    };
 	const onFinish = (values: any) => {
 		let token = localStorage.getItem('usertoken');
-  	 	UserApi.updateInfo(values, token).then(ok=>{
+  	 	UserApi.updateInfo(values, token).then(res=>{
+  	 		openNotification()
+  	 	})
+	};
+	const onFinish2FA = (values: any) => {
+		let token = localStorage.getItem('usertoken');
+  	 	UserApi.onOffTwoFa(token, values.code).then(res=>{
+  	 		console.log(res)
   	 		openNotification()
   	 	})
 	};
@@ -37,7 +75,9 @@ const Home = () => {
 	};
 	const logOut = () => {
 	  localStorage.removeItem("usertoken")
-
+	};
+	const onChange  = (checked) => {
+		showModal_v2()
 	};
   
 	const layout = {
@@ -45,11 +85,9 @@ const Home = () => {
 	  wrapperCol: { span: 16 },
 	};
 	const { SubMenu } = Menu;
-
     return (
-	   	<div>
-	   	<img src="data:image/png;base64,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" width="100" height="50" />
-    		
+	   	<div>   
+	   		
 		   	<div>
 			    <Menu  mode="horizontal">
 			        <Menu.Item key="mail" icon={<MailOutlined />}>
@@ -83,17 +121,53 @@ const Home = () => {
 					      </Form.Item>
 					      <Form.Item name={'firstName'} label="First Name">
 					        <Input />
+					      </Form.Item> 
+					       <Form.Item name={'username'} label="Username">
+					        <Input />
 					      </Form.Item>
-					      <Form.Item name={'address'} label="Address">
+					      <Form.Item name={'firstName'} label="FirstName">
+					        <Input />
+					      </Form.Item>
+					      <Form.Item name={'lastName'} label="LastName">
 					        <Input />
 					      </Form.Item>
 					      <Form.Item name={'phone'} label="Phone">
-					        <Input.TextArea />
+					        <Input />
+					      </Form.Item>
+					      <Form.Item  label="Enabled 2FA">
+					        <Switch defaultChecked onChange={onChange} />
 					      </Form.Item>
 					      <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
 					        <Button type="primary" htmlType="submit">
 					          Update
 					        </Button>
+					         <Button type="primary" onClick={showModal}>
+						        Open QrCode
+						      </Button>
+						      <Modal title="Two Factor Authentication " visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+						        							<img src={QrCode} width="100%" height="100%" />
+						      </Modal>
+						     
+						      <Modal title="Two Factor Authentication " visible={isModalVisible_v2} onOk={handleOk_v2} onCancel={handleCancel_v2}>
+						        	 <Form
+									      {...layout}
+									      name="basic"
+									      onFinish={onFinish2FA}
+									    >
+									      <Form.Item
+									        label="2FA Code"
+									        name="code"
+									        rules={[{ required: true, message: 'Please input your 2fa!' }]}
+									      >
+									        <Input />
+									      </Form.Item>
+									      <Form.Item >
+									        <Button type="primary" htmlType="submit">
+									          On/
+									        </Button>
+									      </Form.Item>
+									    </Form>
+						      </Modal>
 					      </Form.Item>
 					    </Form>
 					</Col>
