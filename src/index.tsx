@@ -6,7 +6,6 @@ import { Provider, useDispatch } from 'react-redux'
 import { createStore } from 'redux'
 import rootReducer from './reducer.js'
 import UserApi from './functions/api/user'
-
     const store = createStore(rootReducer);
 	const initialApp = (currentUser) => {
 		let data: any;
